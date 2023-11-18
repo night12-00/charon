@@ -1,0 +1,80 @@
+name: Backend Unit Tests - MySQL
+on:
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - resources/assets/**
+  push:
+    branches:
+      - dev
+    paths-ignore:
+      - resources/assets/**
+  workflow_dispatch:
+    branches:
+      - dev
+      - main
+    paths-ignore:
+      - resources/assets/**
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: [ 8.1 ]
+        mysql-version: [ 8.0 ]
+      fail-fast: false
+
+    services:
+      mysql:
+        image: mysql:${{ matrix.mysql-version }}
+        env:
+          MYSQL_DATABASE: charon 
+          MYSQL_USER: mysql
+          MYSQL_PASSWORD: mysql
+          MYSQL_ROOT_PASSWORD: mysql
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DB_CONNECTION: mysql-ci
+      DB_HOST: 127.0.1.1
+      DB_PORT: 3306
+      DB_DATABASE: charon 
+      DB_USERNAME: mysql
+      DB_PASSWORD: mysql
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer:v6
+          coverage: xdebug
+          extensions: pdo_sqlite, zip, gd
+      - name: Install PHP dependencies
+        uses: ramsey/composer-install@v2
+        with:
+          composer-options: --prefer-dist
+      - name: Generate app key
+        run: php artisan key:generate
+      - name: Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
+      - name: Upload logs if broken
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: logs
+          path: storage/logs
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
