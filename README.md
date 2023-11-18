@@ -26,7 +26,7 @@ Laravel is accessible, powerful, and provides tools required for large, robust a
 #### With docker
 ```bash
 git clone https://github.com/Dominic-github/charon
-cd music-app
+cd charon
 make composer-install
 ./vendor/bin/sail up
 ```
@@ -34,7 +34,7 @@ make composer-install
  
 ```bash
 git clone https://github.com/Dominic-github/charon
-cd music-app
+cd charon
 composer install
 php artisan serve
 ```
