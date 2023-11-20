@@ -29,11 +29,20 @@ docker-data:
 	@make docker-seed
 
 data:
+	@make migrate
+	@make seed
+
+migrate:
 	php artisan migrate
+
+seed:
 	php artisan db:seed
 
 up:
 	php artisan serve
 
+cache:
+	php artisan config:cache
+	
 generate-key:
 	php artisan key:generate
