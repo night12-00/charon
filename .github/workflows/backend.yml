@@ -37,7 +37,7 @@ jobs:
       - name: Install PHP dependencies
         uses: ramsey/composer-install@v2
         with:
-          composer-options: --prefer-dist
+          composer-options: --ignore-platform-reqs
       - name: Generate app key
         run: php artisan key:generate
       - name: Upload logs if broken
