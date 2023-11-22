@@ -1,5 +1,9 @@
 setup:
-	
+
+env:
+	cp .env.example .env
+	php artisan key:generate
+
 
 composer-install:
 	docker run --rm \
@@ -43,6 +47,6 @@ up:
 
 cache:
 	php artisan config:cache
-	
+
 generate-key:
 	php artisan key:generate
