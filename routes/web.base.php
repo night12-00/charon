@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('app');
-})
-->name('application');
+
+
+Route::middleware('web')->group(static function (): void {
+    Route::get('/', static fn () => view('index'));
+
+});

@@ -20,6 +20,8 @@
         "url": "https://github.com/night12-00/charon"
     },
     "scripts": {
+        "lint": "eslint ./resources/assets/js/**/*.js --no-error-on-unmatched-pattern && eslint ./cypress/**/*.js  --no-error-on-unmatched-pattern",
+        "test:unit": "vitest",
         "dev": "vite",
         "build": "vite build"
     },
