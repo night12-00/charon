@@ -1,3 +1,7 @@
 # Updated by Dominic-github
 node_modules
+package.json
+package-lock.json
+composer.json
+composer.lock
 dist/

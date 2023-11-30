@@ -13,7 +13,7 @@
     </head>
     <body>
         <div id="app"></div>
-        <noscript>It may sound funny, but Koel requires JavaScript to sing. Please enable it.</noscript>
+        <noscript>It may sound funny, but Charon requires JavaScript to sing. Please enable it.</noscript>
         <script>
             window.PUSHER_APP_KEY = @json(config('broadcasting.connections.pusher.key'));
             window.PUSHER_APP_CLUSTER = @json(config('broadcasting.connections.pusher.options.cluster'));
