@@ -1,7 +1,6 @@
 # Global
 
-image_name = charon-Charon-1
-
+image_name = $(shell docker-compose ps -q Charon)
 
 # Check Os
 ifdef OS # Windown
@@ -41,7 +40,7 @@ seed:
 	php artisan db:seed
 
 up:
-	php artisan serve
+	php artisan serve --host=localhost --port=80
 
 cache:
 	php artisan config:cache
@@ -53,9 +52,13 @@ docker-setup:
 	@make docker-env
 	@make docker-generate-key
 	@make docker-up
+	@make compose-install
 
 composer-install:
-	docker exec -it $(image_name) composer install --no-interaction
+	docker exec -it $(image_name) composer install
+
+composer-update:
+	docker exec -it $(image_name) composer update
 
 docker-env:
 	$(COPY) .env.example .env
@@ -74,7 +77,7 @@ docker-seed:
 	docker exec $(image_name) bash -c "php artisan db:seed"
 
 docker-up:
-	./vendor/bin/sail up -d
+	docker-composer up -d
 
 docker-stop:
-	./vendor/bin/sail stop
+	docker-composer stop

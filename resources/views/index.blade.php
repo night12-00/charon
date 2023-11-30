@@ -2,5 +2,5 @@
 @section('title', 'Charon')
 
 @push('scripts')
-    @vite('resources/assets/js/app.js')
+    @vite('resources/assets/js/app.ts')
 @endpush 
