@@ -19,6 +19,9 @@ endif
 
 # For normal
 
+init:
+	php artisan charon:init
+
 setup:
 	@make env
 	@make generate-key

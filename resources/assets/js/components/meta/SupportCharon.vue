@@ -2,7 +2,7 @@
   <div v-if="shown" class="support-bar" data-testid="support-bar">
     <p>
       Loving Charon? Please consider supporting its development via
-      <a href="https://github.com/users/phanan/sponsorship" rel="noopener" target="_blank">GitHub Sponsors</a>
+      <a href="https://github.com/users/dominic-github/sponsorship" rel="noopener" target="_blank">GitHub Sponsors</a>
       and/or
       <a href="https://opencollective.com/charon" rel="noopener" target="_blank">OpenCollective</a>.
     </p>
