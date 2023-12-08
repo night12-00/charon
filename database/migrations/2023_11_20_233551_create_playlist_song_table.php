@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('playlist_song', static function (Blueprint $table): void {
             $table->increments('id');
             $table->integer('playlist_id')->unsigned();
-            $table->string('song_id', 32);
+            $table->string('song_id', 36);
         });
 
         Schema::table('playlist_song', static function (Blueprint $table): void {

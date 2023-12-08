@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Song;
 
 return new class extends Migration
 {
@@ -12,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('songs', function (Blueprint $table) {
-            $table->string('id', 32)->primary();
+            $table->string('id', 36)->primary();
             $table->integer('album_id')->unsigned();
             $table->mediumText('title');
             $table->float('length');
@@ -22,6 +23,11 @@ return new class extends Migration
             $table->text('path');
             $table->integer('mtime');
             $table->timestamps();
+        });
+
+        Song::all()->each(static function (Song $song): void {
+            $song->id = Str::uuid();
+            $song->save();
         });
     }
 

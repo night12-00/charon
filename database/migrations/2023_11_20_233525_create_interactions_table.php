@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('interactions', static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->integer('user_id')->unsigned();
-            $table->string('song_id', 32);
+            $table->string('song_id', 36);
             $table->boolean('liked')->default(false);
             $table->integer('play_count')->default(0);
             $table->timestamps();
