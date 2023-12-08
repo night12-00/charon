@@ -226,7 +226,7 @@ paths:
                       $ref: '#/components/schemas/Album'
                   allowDownload:
                     type: boolean
-                    description: Whether the current installation of Koel allows downloading
+                    description: Whether the current installation of Charon allows downloading
                   artists:
                     type: array
                     items:
@@ -239,10 +239,10 @@ paths:
                     $ref: '#/components/schemas/User'
                   currentVersion:
                     type: string
-                    description: Version of the current installation of Koel
+                    description: Version of the current installation of Charon
                   latestVersion:
                     type: string
-                    description: The latest version of Koel
+                    description: The latest version of Charon
                   playlists:
                     type: array
                     items:
@@ -254,7 +254,7 @@ paths:
                       type: string
                   settings:
                     type: object
-                    description: Settings for the current Koel installation. Only available if the current authenticated user is an admin.
+                    description: Settings for the current Charon installation. Only available if the current authenticated user is an admin.
                     properties:
                       media_path:
                         type: string
@@ -266,7 +266,7 @@ paths:
                       $ref: '#/components/schemas/Song'
                   supportsTranscoding:
                     type: boolean
-                    description: Whether the current installation of Koel supports transcoding media
+                    description: Whether the current installation of Charon supports transcoding media
                   useLastfm:
                     type: boolean
                   useYouTube:
@@ -1046,7 +1046,7 @@ paths:
         - playback
       responses: { }
       operationId: get-play-songId-transcode-bitrate
-      description: 'The GET request to play/stream a song. This is NOT an XmlHttpRequest By default Koel will serve the file as-is, unless it''s a FLAC file. If the value of `transcode` is truthy, Koel will attempt to transcode the file into `bitRate` kbps using ffmpeg.'
+      description: 'The GET request to play/stream a song. This is NOT an XmlHttpRequest By default Charon will serve the file as-is, unless it''s a FLAC file. If the value of `transcode` is truthy, Charon will attempt to transcode the file into `bitRate` kbps using ffmpeg.'
       security:
         - api-token: [ ]
   /download/songs:
@@ -1466,7 +1466,7 @@ components:
               - url
         cover:
           type: string
-          description: URL to the album cover by Koel
+          description: URL to the album cover by Charon
       required:
         - url
         - image
@@ -1487,7 +1487,7 @@ components:
             - title: I'm Going Slightly Mad
               length: 247
               url: 'https://www.last.fm/music/Queen/_/I%27m+Going+Slightly+Mad'
-          cover: 'https://koel.yourdomain.net/img/covers/5a771ec82a5d72.25096250.png'
+          cover: 'https://charon.yourdomain.net/img/covers/5a771ec82a5d72.25096250.png'
     ArtistExtraInformation:
       title: ArtistExtraInformation
       type: object
@@ -1518,7 +1518,7 @@ components:
       x-examples:
         Sample:
           url: 'https://www.last.fm/music/Queen'
-          image: 'https://koel.yourdomain.net/img/artists/5a772708e7de19.84120679.png'
+          image: 'https://charon.yourdomain.net/img/artists/5a772708e7de19.84120679.png'
           bio:
             summary: Queen were an English rock band originally consisting of four members...
             full: 'Queen were an English rock band originally consisting of four members: vocalist Freddie Mercury, guitarist Brian May, bass guitarist John Deacon, and drummer Roger Taylor.'

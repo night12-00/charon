@@ -1,4 +1,4 @@
-//  <reference types="vitest" />
+/// <reference types="vitest" />
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import laravel from 'laravel-vite-plugin'
@@ -31,9 +31,6 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
-    setupFiles: path.resolve(
-      __dirname,
-      './resources/assets/js/__tests__/setup.ts'
-    )
+    setupFiles: path.resolve(__dirname, './resources/assets/js/__tests__/setup.ts')
   }
 })

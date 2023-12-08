@@ -10,6 +10,7 @@ Homestead.json
 db.mwb.bak
 bower_components
 /CHANGE
+charon.db
 
 ### Node ###
 # Logs
