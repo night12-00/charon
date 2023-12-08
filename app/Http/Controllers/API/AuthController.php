@@ -2,49 +2,53 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Exceptions\InvalidCredentialsException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\UserLoginRequest;
-use App\Services\AuthenticationService;
-
+use App\Models\User;
+use App\Repositories\UserRepository;
+use App\Services\TokenManager;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
+use Illuminate\Hashing\HashManager;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class AuthController extends Controller
 {
-  public function __construct(private AuthenticationService $auth)
-  {
-  }
+    use ThrottlesLogins;
 
-  public function login(UserLoginRequest $request)
-  {
-    if ($this->hasTooManyLoginAttempts($request)) {
-      $this->fireLockoutEvent($request);
-      $this->sendLockoutResponse($request);
+    /** @param User $user */
+    public function __construct(
+        private UserRepository $userRepository,
+        private HashManager $hash,
+        private TokenManager $tokenManager,
+        private ?Authenticatable $user
+    ) {
     }
 
-    try {
-      return response()->json(
-        $this->auth->login($request->email, $request->password)->toArray()
-      );
-    } catch (InvalidCredentialsException) {
-      $this->incrementLoginAttempts($request);
-      abort(Response::HTTP_UNAUTHORIZED, 'Invalid credentials');
+    public function login(UserLoginRequest $request)
+    {
+        /** @var User|null $user */
+        $user = $this->userRepository->getFirstWhere('email', $request->email);
+
+        if (!$user || !$this->hash->check($request->password, $user->password)) {
+            abort(Response::HTTP_UNAUTHORIZED, 'Invalid credentials');
+        }
+
+        $token = $this->tokenManager->createCompositionToken($user);
+
+        return response()->json([
+            'token' => $token->apiToken,
+            'audio-token' => $token->audioToken,
+        ]);
     }
-  }
 
-  public function logout(Request $request)
-  {
-    attempt(fn() => $this->auth->logoutViaBearerToken($request->bearerToken()));
+    public function logout(Request $request)
+    {
+        if ($this->user) {
+            attempt(fn () => $this->tokenManager->deleteCompositionToken($request->bearerToken()));
+        }
 
-    return response()->noContent();
-  }
-
-  /**
-   * For the throttle middleware.
-   */
-  protected function username(): string
-  {
-    return 'email';
-  }
+        return response()->noContent();
+    }
 }

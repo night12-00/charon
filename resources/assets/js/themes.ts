@@ -15,7 +15,6 @@ import thumbCat from '../img/themes/thumbnails/cat.jpg'
 import bgDawn from '../img/themes/bg-dawn.jpg'
 import thumbDawn from '../img/themes/thumbnails/dawn.jpg'
 
-
 export default [
   {
     id: 'classic',
