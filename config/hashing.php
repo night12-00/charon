@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Hash Driver
@@ -11,10 +10,9 @@ return [
     | passwords for your application. By default, the bcrypt algorithm is
     | used; however, you remain free to modify this option if you wish.
     |
-    | Supported: "bcrypt", "argon", "argon2id"
+    | Supported: "bcrypt", "argon"
     |
     */
-
     'driver' => 'bcrypt',
 
     /*
@@ -27,10 +25,8 @@ return [
     | to control the amount of time it takes to hash the given password.
     |
     */
-
     'bcrypt' => [
-        'rounds' => env('BCRYPT_ROUNDS', 12),
-        'verify' => true,
+        'rounds' => env('BCRYPT_ROUNDS', 10),
     ],
 
     /*
@@ -43,12 +39,9 @@ return [
     | to control the amount of time it takes to hash the given password.
     |
     */
-
     'argon' => [
-        'memory' => 65536,
-        'threads' => 1,
-        'time' => 4,
-        'verify' => true,
+        'memory' => 1024,
+        'threads' => 2,
+        'time' => 2,
     ],
-
 ];

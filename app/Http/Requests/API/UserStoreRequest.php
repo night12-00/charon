@@ -11,14 +11,14 @@ use Illuminate\Validation\Rules\Password;
  */
 class UserStoreRequest extends Request
 {
-  /** @return array<mixed> */
-  public function rules(): array
-  {
-    return [
-      'name' => 'required',
-      'email' => 'required|email|unique:users',
-      'password' => ['required', Password::defaults()],
-      'is_admin' => 'sometimes',
-    ];
-  }
+    /** @return array<mixed> */
+    public function rules(): array
+    {
+        return [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => ['required', Password::defaults()],
+            'is_admin' => 'sometimes',
+        ];
+    }
 }

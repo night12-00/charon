@@ -2,16 +2,20 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
-class Authenticate extends Middleware
+class Authenticate
 {
-    /**
-     * Get the path the user should be redirected to when they are not authenticated.
-     */
-    protected function redirectTo(Request $request): ?string
+    public function handle(Request $request, Closure $next) // @phpcs:ignore
     {
-        return $request->expectsJson() ? null : route('login');
+        if ($request->user()?->tokenCan('*')) {
+            return $next($request);
+        }
+
+        abort_if($request->ajax() || $request->wantsJson(), Response::HTTP_UNAUTHORIZED);
+
+        return redirect()->guest('/');
     }
 }
