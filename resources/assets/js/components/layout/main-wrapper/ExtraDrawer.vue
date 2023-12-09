@@ -96,7 +96,7 @@ const { currentUser } = useAuthorization()
 const { useYouTube } = useThirdPartyServices()
 const { shouldNotifyNewVersion } = useNewVersionNotification()
 
-const song = requireInjection(CurrentSongKey, ref(undefined))
+const song = requireInjection(CurrentSongKey, ref(null))
 const activeTab = ref<ExtraPanelTab | null>(null)
 
 const artist = ref<Artist>()
