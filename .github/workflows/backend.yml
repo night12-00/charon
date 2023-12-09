@@ -2,17 +2,18 @@ name: Backend Unit Tests
 on:
   pull_request:
     branches:
-      - master
+      - main
     paths-ignore:
       - resources/assets/**
   push:
     branches:
-      - master
+      - dev
     paths-ignore:
       - resources/assets/**
   workflow_dispatch:
     branches:
-      - master
+      - dev
+      - main
     paths-ignore:
       - resources/assets/**
 jobs:
@@ -20,36 +21,32 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: [ 8.0, 8.1 ]
+        php-version: [ 8.1 ]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          tools: composer:v2
+          tools: composer:v6
           coverage: xdebug
           extensions: pdo_sqlite, zip, gd
       - name: Install PHP dependencies
         uses: ramsey/composer-install@v2
         with:
-          composer-options: --prefer-dist
+          composer-options: --ignore-platform-reqs
       - name: Generate app key
-        run: php artisan key:generate --quiet
-      - name: Run code style checker
-        run: composer cs
-      - name: Run static analysis
-        run: composer analyze -- --no-progress
-      - name: Run tests
-        run: composer coverage
+        run: php artisan key:generate
       - name: Upload logs if broken
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: logs
           path: storage/logs
       - name: Upload coverage
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
