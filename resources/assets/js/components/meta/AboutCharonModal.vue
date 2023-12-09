@@ -31,13 +31,10 @@
         </ul>
       </div>
 
-      <SponsorList />
-
       <p>
         Loving charon? Please consider supporting its development via
-        <a href="https://github.com/users/dominic-github/sponsorship" rel="noopener" target="_blank">GitHub Sponsors</a>
-        and/or
-        <a href="https://opencollective.com/charon" rel="noopener" target="_blank">OpenCollective</a>.
+        <a href="https://github.com/users/dominic-github/sponsorship" rel="noopener" target="_blank">GitHub Sponsors.</a>
+        
       </p>
     </main>
 
