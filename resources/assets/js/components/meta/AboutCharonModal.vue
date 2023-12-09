@@ -15,7 +15,7 @@
 
       <p class="author">
         Made with ❤️ by
-        <a href="https://github.com/phanan" rel="noopener" target="_blank">Phan An</a>
+        <a href="https://github.com/phanan" rel="noopener" target="_blank">Dominic</a>
         and quite a few
         <a href="https://github.com/charon/core/graphs/contributors" rel="noopener" target="_blank">awesome</a>&nbsp;<a
           href="https://github.com/charon/charon/graphs/contributors" rel="noopener" target="_blank"
