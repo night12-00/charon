@@ -1,0 +1,7 @@
+# Updated by Dominic-github on August 3 2023
+node_modules/
+dist/
+package.json
+package-lock.json
+config/
+docker-compose.yml

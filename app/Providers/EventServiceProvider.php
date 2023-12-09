@@ -2,37 +2,56 @@
 
 namespace App\Providers;
 
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
-use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
+use App\Events\LibraryChanged;
+use App\Events\MediaSyncCompleted;
+use App\Events\SongLikeToggled;
+use App\Events\SongsBatchLiked;
+use App\Events\SongsBatchUnliked;
+use App\Events\SongStartedPlaying;
+use App\Listeners\ClearMediaCache;
+use App\Listeners\DeleteNonExistingRecordsPostSync;
+use App\Listeners\LoveMultipleTracksOnLastfm;
+use App\Listeners\LoveTrackOnLastfm;
+use App\Listeners\PruneLibrary;
+use App\Listeners\UnloveMultipleTracksOnLastfm;
+use App\Listeners\UpdateLastfmNowPlaying;
+use App\Models\Album;
+use App\Observers\AlbumObserver;
+use Illuminate\Foundation\Support\Providers\EventServiceProvider as BaseServiceProvider;
 
-class EventServiceProvider extends ServiceProvider
+class EventServiceProvider extends BaseServiceProvider
 {
-    /**
-     * The event to listener mappings for the application.
-     *
-     * @var array<class-string, array<int, class-string>>
-     */
     protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
+        SongLikeToggled::class => [
+            LoveTrackOnLastfm::class,
+        ],
+
+        SongsBatchLiked::class => [
+            LoveMultipleTracksOnLastfm::class,
+        ],
+
+        SongsBatchUnliked::class => [
+            UnloveMultipleTracksOnLastfm::class,
+        ],
+
+        SongStartedPlaying::class => [
+            UpdateLastfmNowPlaying::class,
+        ],
+
+        LibraryChanged::class => [
+            PruneLibrary::class,
+            ClearMediaCache::class,
+        ],
+
+        MediaSyncCompleted::class => [
+            DeleteNonExistingRecordsPostSync::class,
         ],
     ];
 
-    /**
-     * Register any events for your application.
-     */
     public function boot(): void
     {
-        //
-    }
+        parent::boot();
 
-    /**
-     * Determine if events and listeners should be automatically discovered.
-     */
-    public function shouldDiscoverEvents(): bool
-    {
-        return false;
+        Album::observe(AlbumObserver::class);
     }
 }
