@@ -43,12 +43,13 @@
     "youtube-player": "^3.0.4"
   },
   "devDependencies": {
-    "@prettier/plugin-php": "^0.21.0",
     "@babel/core": "^7.17.9",
     "@babel/polyfill": "^7.8.7",
     "@babel/preset-env": "^7.9.6",
     "@faker-js/faker": "^6.2.0",
     "@floating-ui/dom": "^1.0.3",
+    "@prettier/plugin-php": "^0.21.0",
+    "@testing-library/cypress": "^10.0.1",
     "@testing-library/user-event": "^14.4.3",
     "@testing-library/vue": "^6.6.1",
     "@types/axios": "^0.14.0",

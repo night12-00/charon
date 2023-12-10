@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\UserLoginRequest;
 use App\Models\User;
+use App\Http\Resources\UserResource;
+use App\Services\UserService;
 use App\Repositories\UserRepository;
 use App\Services\TokenManager;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -22,6 +24,7 @@ class AuthController extends Controller
         private UserRepository $userRepository,
         private HashManager $hash,
         private TokenManager $tokenManager,
+        private UserService $userService,
         private ?Authenticatable $user
     ) {
     }
@@ -41,6 +44,25 @@ class AuthController extends Controller
             'token' => $token->apiToken,
             'audio-token' => $token->audioToken,
         ]);
+    }
+
+    public function register(UserLoginRequest $request)
+    {
+        /** @var User|null $user */
+        $user = $this->userRepository->getFirstWhere('email', $request->email);
+        if($user || $request->password != $request->rePassword){
+            abort(Response::HTTP_UNAUTHORIZED, 'Invalid credentials');
+        }else{
+            
+            return UserResource::make($this->userService->createUser(
+                $request->fullName,
+                $request->email,
+                $request->password,
+                false
+            ));
+        }
+
+
     }
 
     public function logout(Request $request)
