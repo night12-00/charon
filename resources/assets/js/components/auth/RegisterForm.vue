@@ -1,51 +1,51 @@
 <template>
-  <form :class="{ error: failed }" data-testid="login-form" @submit.prevent="login">
+  <form :class="{ error: failed }" data-testid="register-form" @submit.prevent="register">
     <div class="logo">
       <img alt="Charon's logo" src="@/../img/logo.png" width="156">
     </div>
+    <input v-model="fullName" autofocus placeholder="Full Name" required type="text">
     <input v-model="email" autofocus placeholder="Email Address" required type="email">
     <input v-model="password" placeholder="Password" required type="password">
-    <Btn type="submit">Log In</Btn>
-    <p class="register">Don't have account?  <a @click="goRegister">Create Account</a></p>
+    <input v-model="rePassword" placeholder="Confirm Password" required type="password">
+    <Btn type="submit">Create Account</Btn>
+    <p class="register">Already have an account? <a @click="goLogin">Login</a></p>
   </form>
 </template>
 
 <script lang="ts" setup>
-
-
 import { ref } from 'vue'
 import { userStore } from '@/stores'
-import { isDemo } from '@/utils'
-import { useRouter } from '@/composables'
-
-
 import Btn from '@/components/ui/Btn.vue'
 
-const DEMO_ACCOUNT = {
-  email: 'demo@charon.dev',
-  password: 'demo'
-}
+const DEFAULT= {
+  fullName: '',
+  email: '',
+  password: '',
+  rePassword: ''
 
-const goRegister = () => {
-  emit('toggleIsLogin')
 }
 
 const url = ref('')
-const email = ref(isDemo() ? DEMO_ACCOUNT.email : '')
-const password = ref(isDemo() ? DEMO_ACCOUNT.password : '')
+const fullName = ref(DEFAULT.fullName)
+const email = ref(DEFAULT.email)
+const password= ref(DEFAULT.password)
+const rePassword = ref(DEFAULT.rePassword)
 const failed = ref(false)
 
-const emit = defineEmits<{ (e: 'loggedin'): void , (e: 'toggleIsLogin'):void }>()
+const emit = defineEmits<{ (e: 'registeredin'): void , (e: 'toggleIsLogin'):void }>()
 
-const login = async () => {
+
+const goLogin = () => {
+  emit('toggleIsLogin')
+}
+const register = async () => {
   try {
-    await userStore.login(email.value, password.value)
+    await userStore.register(fullName.value, email.value, password.value, rePassword.value)
     failed.value = false
-
     // Reset the password so that the next login will have this field empty.
     password.value = ''
-
-    emit('loggedin')
+    rePassword.value = ''
+    emit('registeredin')
   } catch (err) {
     failed.value = true
     window.setTimeout(() => (failed.value = false), 2000)
@@ -97,7 +97,6 @@ form {
   .logo {
     text-align: center;
   }
-
   .register{
     text-align: center;
   }

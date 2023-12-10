@@ -62,6 +62,7 @@ export const userStore = {
   },
 
   login: async (email: string, password: string) => await http.post<User>('me', { email, password }),
+  register: async (fullName: string, email: string, password:string, rePassword: string) => await http.post<User>('register', {fullName, email, password, rePassword}),
   logout: async () => await http.delete('me'),
   getProfile: async () => await http.get<User>('me'),
 

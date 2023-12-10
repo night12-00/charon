@@ -20,7 +20,12 @@
   </div>
 
   <div v-else class="login-wrapper">
-    <LoginForm @loggedin="onUserLoggedIn" />
+    <div class="" v-if="isLogin">
+      <LoginForm  v-on:toggleIsLogin="toggleIsLogin" @loggedin="onUserLoggedIn" />
+    </div>
+    <div class="" v-else>
+      <RegisterForm v-on:toggleIsLogin="toggleIsLogin" @registeredin="onUserRegisteredIn"  />
+    </div>
   </div>
 </template>
 
@@ -45,6 +50,7 @@ import { GlobalEventListeners } from '@/components/utils/GlobalEventListeners'
 
 const Hotkeys = defineAsyncComponent(() => import('@/components/utils/HotkeyListener.vue'))
 const LoginForm = defineAsyncComponent(() => import('@/components/auth/LoginForm.vue'))
+const RegisterForm = defineAsyncComponent(() => import('@/components/auth/RegisterForm.vue'))
 const MainWrapper = defineAsyncComponent(() => import('@/components/layout/main-wrapper/index.vue'))
 const AlbumContextMenu = defineAsyncComponent(() => import('@/components/album/AlbumContextMenu.vue'))
 const ArtistContextMenu = defineAsyncComponent(() => import('@/components/artist/ArtistContextMenu.vue'))
@@ -61,8 +67,9 @@ const toaster = ref<InstanceType<typeof MessageToaster>>()
 const currentSong = ref<Song>()
 const authenticated = ref(false)
 const showDropZone = ref(false)
+const isLogin = ref(true)
 
-const { isCurrentScreen } = useRouter()
+const { isCurrentScreen} = useRouter()
 const { offline } = useNetworkStatus()
 
 /**
@@ -74,9 +81,19 @@ const requestNotificationPermission = async () => {
   }
 }
 
+
+
 const onUserLoggedIn = async () => {
   authenticated.value = true
   await init()
+}
+
+const toggleIsLogin = () => {
+  isLogin.value = !isLogin.value
+}
+
+const onUserRegisteredIn= async () => {
+  isLogin.value = true
 }
 
 onMounted(async () => {
@@ -128,6 +145,8 @@ provide(OverlayKey, overlay)
 provide(DialogBoxKey, dialog)
 provide(MessageToasterKey, toaster)
 provide(CurrentSongKey, currentSong)
+
+
 </script>
 
 <style lang="scss">
